@@ -7,23 +7,32 @@ public class Calculator {
             int a = in.nextInt();
             check(a);
             String symbol = in.next();
-            int b = in.nextInt();
-            check(b);
-            System.out.println(a + " " + symbol + " " + b + " = " + arithmetic(a, symbol, b));
+            try {
+                int b = Integer.parseInt(in.next());
+                check(b);
+                System.out.println(a + " " + symbol + " " + b + " = " + arithmetic(a, symbol, b));
+            } catch (Exception ex) {
+                throw new Exception("Перед числом не должно быть арифметических знаков: '*' и '/' и правильно написано");
+            }
+
         } else if (in.hasNext() & in.hasNext() & in.hasNext()) {
             String a = in.next();
-            check(fromRoman(a));
+            if (a.contains("+") || a.contains("-") || a.contains("/") || a.contains("*")) {
+                throw new Exception("Перед числом не должно быть арифметических знаков: '*' и '/'\n\t Перед римскими числами не должно быть арифметических знаков");
+            }
+            check(Roman.fromRomanToInt(a));
             String symbol = in.next();
             String b = in.next();
-            check(fromRoman(b));
-            System.out.println(a + " " + symbol + " " + b + " = " + arithmetic(fromRoman(a), symbol, fromRoman(b)));
+            check(Roman.fromRomanToInt(b));
+            System.out.println(a + " " + symbol + " " + b + " = " + Roman.toRomanFromInt(arithmetic(Roman.fromRomanToInt(a), symbol, Roman.fromRomanToInt(b))));
+
         } else {
             throw new Exception("Используйте только один тип чисел одновременно");
         }
     }
 
     protected static int arithmetic(int a, String symbol, int b) throws Exception {
-        int result = 0;
+        int result;
         switch (symbol) {
             case "/": {
                 result = a/b;
@@ -46,53 +55,6 @@ public class Calculator {
             }
         }
         return result;
-    }
-
-    protected static int fromRoman(String roman) {
-        int number = 0;
-        switch (roman) {
-            case "I": {
-                number = 1;
-                break;
-            }
-            case "II": {
-                number = 2;
-                break;
-            }
-            case "III": {
-                number = 3;
-                break;
-            }
-            case "IV": {
-                number = 4;
-                break;
-            }
-            case "V": {
-                number = 5;
-                break;
-            }
-            case "VI": {
-                number = 6;
-                break;
-            }
-            case "VII": {
-                number = 7;
-                break;
-            }
-            case "VIII": {
-                number = 8;
-                break;
-            }
-            case "IX": {
-                number = 9;
-                break;
-            }
-            case "X": {
-                number = 10;
-                break;
-            }
-        }
-        return number;
     }
 
     protected static void check(int number) throws Exception {
